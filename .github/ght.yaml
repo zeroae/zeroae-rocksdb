@@ -5,21 +5,18 @@ codecov:
   badge_token: CODECOV_BADGE_TOKEN
 
 codacy:
-  #
-  # TODO: Place your CODACY Project Id here.
-  #       This is used for displaying your badge in public and private repos
-  project_id: CODACY_BADGE_TOKEN
+  project_id: 831f0a338c0645ebaf8e3fb60ff3154d
 
 ght:
   command_line_interface:
-    - (*) Click
-    - ( ) None
+    - ( ) Click
+    - (*) None
 
   license:
-    - (*) MIT
+    - ( ) MIT
     - ( ) BSD
     - ( ) ISC
-    - ( ) Apache
+    - (*) Apache
     - ( ) GNUv3
     - ( ) Proprietary
 
@@ -27,13 +24,13 @@ cookiecutter:
   #
   # These were guess based on the repository information
   # You probably want to customize them.
-  project_namespace: "{{ github.repository.full_name.split('/')[0].lower().replace(' ', '_').replace('-', '_') }}"
-  project_slug: "{{ github.repository.name.lower().replace(' ', '_').replace('-', '_').replace(cookiecutter.project_namespace+'_', '') }}"
-  project_name: "{{ cookiecutter.project_namespace }}'s {{ cookiecutter.project_slug }}"
+  project_namespace: "zeroae"
+  project_slug: "rocksdb"
+  project_name: "zeroae's rocksdb python bindings"
 
   #
   # These are likely correct...
-  anaconda_organization: "{{ cookiecutter.github_organization }}"
+  anaconda_organization: "zeroae"
 
   #
   # These should not be changed at the moment...
@@ -44,9 +41,22 @@ cookiecutter:
 
   #
   # These should probably be left alone. They came from github
-  full_name: "{{ github.author.name }}"
-  email: "{{ github.author.email }}"
-  github_username: "{{ github.author.username }}"
-  github_organization: "{{ github.repository.full_name.split('/')[0] }}"
-  project_repo: "{{ github.repository.name }}"
-  project_short_description: "{{ github.repository.description }}"
+  full_name: "Patrick Sodré"
+  email: "psodre@gmail.com"
+  github_username: "sodre"
+  github_organization: "zeroae"
+  project_repo: "zeroae-rocksdb"
+  project_short_description: "ZeroAE's RocksDB Python bindings"
+
+#
+# These were picked up during Initial Commit...
+github:
+  author:
+    email: psodre@gmail.com
+    name: Patrick Sodré
+    username: sodre
+  repository:
+    name: zeroae-rocksdb
+    full_name: zeroae/zeroae-rocksdb
+    description: ZeroAE's RocksDB Python bindings
+    private: false

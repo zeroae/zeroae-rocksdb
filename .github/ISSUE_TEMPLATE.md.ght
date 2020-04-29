@@ -1,5 +1,5 @@
 ### Environment Information
-* {{ cookiecutter.project_name }} version:
+* zeroae's rocksdb python bindings version:
 * Python version:
 * Operating System:
 
