@@ -8,13 +8,18 @@ import os
 with open("README.rst") as readme_file:
     readme = readme_file.read()
 
-c_options = Extension("zeroae.rocksdb.c._options",
+i_files = [
+    "block_based_table_options",
+    "options"
+]
+ext_modules = [Extension(f"zeroae.rocksdb.c._{i_file}",
                       libraries=["rocksdb"],
-                      sources=["zeroae/rocksdb/c/options.i"],
+                      sources=[f"zeroae/rocksdb/c/{i_file}.i"],
                       swig_opts=["-py3",
                                  f"-I{os.environ['CONDA_PREFIX']}/include"]
                       )
-ext_modules = [c_options]
+                for i_file in i_files
+                ]
 
 # The requirements section should be kept in sync with the environment.yml file
 requirements = [

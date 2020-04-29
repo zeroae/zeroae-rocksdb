@@ -12,9 +12,12 @@
 // Strip rocksdb_options_ from function names
 %rename("%(strip:[rocksdb_options_])s", regexmatch$name="^rocksdb_options_") "";
 
-// Constructor/Destructor
+// Constructor/Destructor for rocksdb_options_t
 %newobject create;
 %delobject destroy;
+
+// malloc()-ed return values
+%newobject statistics_get_string;
 
 %include <rocksdb/c.h>
 
