@@ -2,11 +2,29 @@
 
 """The setup script."""
 
-from setuptools import setup, find_namespace_packages
+from setuptools import setup, find_namespace_packages, Extension
 import os
 
 with open("README.rst") as readme_file:
     readme = readme_file.read()
+
+i_files = [
+    "block_based_options",
+    "cache",
+    "cuckoo_options",
+    "fifo_compaction_options",
+    "options",
+    "ratelimiter",
+    "universal_compaction_options",
+]
+ext_modules = [Extension(f"zeroae.rocksdb.c._{i_file}",
+                      libraries=["rocksdb"],
+                      sources=[f"zeroae/rocksdb/c/{i_file}.i"],
+                      swig_opts=["-py3",
+                                 f"-I{os.environ['CONDA_PREFIX']}/include"]
+                      )
+                for i_file in i_files
+                ]
 
 # The requirements section should be kept in sync with the environment.yml file
 requirements = [
@@ -69,6 +87,7 @@ setup_kwargs = dict(
     },
     url="https://github.com/zeroae/zeroae-rocksdb",
     zip_safe=False,
+    ext_modules=ext_modules,
 )
 
 if "CONDA_BUILD_STATE" in os.environ:
