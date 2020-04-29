@@ -12,6 +12,7 @@ i_files = [
     "block_based_options",
     "cache",
     "cuckoo_options",
+    "dbpath",
     "fifo_compaction_options",
     "options",
     "ratelimiter",
