@@ -43,8 +43,8 @@ def test_set_compaction_filter_factory():
     assert False
 
 
-def test_compaction_readahead_size():
-    assert False
+def test_compaction_readahead_size(rocksdb_options):
+    options.compaction_readahead_size(rocksdb_options, 1024)
 
 
 def test_set_comparator():
