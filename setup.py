@@ -13,6 +13,7 @@ i_files = [
     "cache",
     "cuckoo_options",
     "dbpath",
+    "env",
     "envoptions",
     "fifo_compaction_options",
     "options",
