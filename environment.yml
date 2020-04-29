@@ -7,8 +7,13 @@ dependencies:
   - python
   - pip
 
+  # Build Requirements
+  - compilers
+  - swig >=4
+
   # Setup Requirements (setup.py:setup_requirements)
   - pytest-runner >=5
+  - rocksdb
   - setuptools_scm
   - wheel
 
@@ -26,6 +31,7 @@ dependencies:
   - watchdog
 
   # Dev Workflow requirements
+  - jupyter
   - pre-commit
   - black
   - flake8
