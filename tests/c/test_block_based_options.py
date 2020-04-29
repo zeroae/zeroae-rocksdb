@@ -1,4 +1,4 @@
-from zeroae.rocksdb.c import block_based_table_options as bbto
+from zeroae.rocksdb.c import block_based_options as bbto
 
 
 def test_create_destroy():

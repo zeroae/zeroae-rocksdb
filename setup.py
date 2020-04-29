@@ -9,7 +9,7 @@ with open("README.rst") as readme_file:
     readme = readme_file.read()
 
 i_files = [
-    "block_based_table_options",
+    "block_based_options",
     "options"
 ]
 ext_modules = [Extension(f"zeroae.rocksdb.c._{i_file}",

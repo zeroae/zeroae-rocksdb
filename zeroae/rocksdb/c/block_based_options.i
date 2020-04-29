@@ -1,4 +1,4 @@
-%module(package="zeroae.rocksdb.c") block_based_table_options
+%module(package="zeroae.rocksdb.c") block_based_options
 %{
 #define SWIG_FILE_WITH_INIT
 #include <rocksdb/c.h>
