@@ -1,7 +1,7 @@
 import pytest
 from zeroae.rocksdb.c import (
     block_based_options, cuckoo_options, options, ratelimiter,
-    universal_compaction_options, fifo_compaction_options
+    universal_compaction_options, fifo_compaction_options, cache
 )
 
 
@@ -13,10 +13,24 @@ def rocksdb_block_based_table_options():
 
 
 @pytest.fixture
+def rocksdb_cache_lru():
+    rv = cache.create_lru(1024)
+    yield rv
+    cache.destroy(rv)
+
+
+@pytest.fixture
 def rocksdb_cuckoo_table_options():
     rv = cuckoo_options.create()
     yield rv
     cuckoo_options.destroy(rv)
+
+
+@pytest.fixture
+def rocksdb_fifo_compaction_options():
+    rv = fifo_compaction_options.create()
+    yield rv
+    fifo_compaction_options.destroy(rv)
 
 
 @pytest.fixture
@@ -40,8 +54,4 @@ def rocksdb_universal_compaction_options():
     universal_compaction_options.destroy(rv)
 
 
-@pytest.fixture
-def rocksdb_fifo_compaction_options():
-    rv = fifo_compaction_options.create()
-    yield rv
-    fifo_compaction_options.destroy(rv)
+

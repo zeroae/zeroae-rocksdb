@@ -10,11 +10,12 @@ with open("README.rst") as readme_file:
 
 i_files = [
     "block_based_options",
+    "cache",
     "cuckoo_options",
+    "fifo_compaction_options",
     "options",
     "ratelimiter",
     "universal_compaction_options",
-    "fifo_compaction_options",
 ]
 ext_modules = [Extension(f"zeroae.rocksdb.c._{i_file}",
                       libraries=["rocksdb"],
