@@ -107,5 +107,3 @@ ENV/
 # IDE settings
 .vscode/
 .idea/
-/zeroae/rocksdb/c.py
-/zeroae/rocksdb/c_wrap.c
