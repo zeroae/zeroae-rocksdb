@@ -1,7 +1,7 @@
 import pytest
 from zeroae.rocksdb.c import (
     block_based_options, cuckoo_options, options, ratelimiter,
-    universal_compaction_options, fifo_compaction_options, cache, env
+    universal_compaction_options, fifo_compaction_options, cache, env, dbpath
 )
 
 
@@ -24,6 +24,13 @@ def rocksdb_cuckoo_table_options():
     rv = cuckoo_options.create()
     yield rv
     cuckoo_options.destroy(rv)
+
+
+@pytest.fixture
+def rocksdb_dbpath(tmp_path):
+    db = dbpath.create(str(tmp_path), 10)
+    assert db is not None
+    dbpath.destroy(db)
 
 
 @pytest.fixture(params=[env.create_default,
