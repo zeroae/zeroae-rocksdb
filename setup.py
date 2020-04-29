@@ -12,6 +12,7 @@ i_files = [
     "block_based_options",
     "cuckoo_options",
     "options",
+    "ratelimiter",
 ]
 ext_modules = [Extension(f"zeroae.rocksdb.c._{i_file}",
                       libraries=["rocksdb"],

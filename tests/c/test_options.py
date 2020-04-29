@@ -463,7 +463,8 @@ def test_set_fifo_compaction_options():
     assert False
 
 
-def test_set_ratelimiter():
+def test_set_ratelimiter(rocksdb_options, rocksdb_ratelimiter):
+    options.set_ratelimiter(rocksdb_options, rocksdb_ratelimiter)
     assert False
 
 
