@@ -455,8 +455,8 @@ def test_set_compaction_style():
     assert False
 
 
-def test_set_universal_compaction_options():
-    assert False
+def test_set_universal_compaction_options(rocksdb_options, rocksdb_universal_compaction_options):
+    options.set_universal_compaction_options(rocksdb_options, rocksdb_universal_compaction_options)
 
 
 def test_set_fifo_compaction_options():

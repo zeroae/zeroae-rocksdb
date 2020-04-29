@@ -1,6 +1,7 @@
 import pytest
 from zeroae.rocksdb.c import (
-    block_based_options, cuckoo_options, options, ratelimiter
+    block_based_options, cuckoo_options, options, ratelimiter,
+    universal_compaction_options
 )
 
 
@@ -30,3 +31,10 @@ def rocksdb_ratelimiter():
     rv = ratelimiter.create(1024, 1000, 1)
     yield rv
     ratelimiter.destroy(rv)
+
+
+@pytest.fixture
+def rocksdb_universal_compaction_options():
+    rv = universal_compaction_options.create()
+    yield rv
+    universal_compaction_options.destroy(rv)
