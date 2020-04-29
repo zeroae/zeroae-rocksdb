@@ -1,9 +1,9 @@
 [run]
-source = {{ cookiecutter.project_namespace }}
+source = zeroae
 
 [report]
 omit =
     setup.py
-    {{ cookiecutter.project_namespace }}/{{ cookiecutter.project_slug }}/__main__.py
-    {{ cookiecutter.project_namespace }}/{{ cookiecutter.project_slug }}/_version.py
+    zeroae/rocksdb/__main__.py
+    zeroae/rocksdb/_version.py
     tests/*
