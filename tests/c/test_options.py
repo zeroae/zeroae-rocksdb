@@ -11,8 +11,8 @@ def test_set_block_based_table_factory(rocksdb_options, rocksdb_block_based_tabl
     options.set_block_based_table_factory(rocksdb_options, rocksdb_block_based_table_options)
 
 
-def test_set_cuckoo_table_factory():
-    assert False
+def test_set_cuckoo_table_factory(rocksdb_options, rocksdb_cuckoo_table_options):
+    options.set_cuckoo_table_factory(rocksdb_options, rocksdb_cuckoo_table_options)
 
 
 def test_increase_parallelism(rocksdb_options):
