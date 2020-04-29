@@ -11,6 +11,7 @@ with open("README.rst") as readme_file:
 i_files = [
     "block_based_options",
     "cache",
+    "compactionfiltercontext",
     "cuckoo_options",
     "dbpath",
     "env",
