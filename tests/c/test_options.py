@@ -459,8 +459,8 @@ def test_set_universal_compaction_options(rocksdb_options, rocksdb_universal_com
     options.set_universal_compaction_options(rocksdb_options, rocksdb_universal_compaction_options)
 
 
-def test_set_fifo_compaction_options():
-    assert False
+def test_set_fifo_compaction_options(rocksdb_options, rocksdb_fifo_compaction_options):
+    options.set_fifo_compaction_options(rocksdb_options, rocksdb_fifo_compaction_options)
 
 
 def test_set_ratelimiter(rocksdb_options, rocksdb_ratelimiter):

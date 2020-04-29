@@ -1,5 +1,5 @@
-%define ROCKSDB_MODULE(package_name, name_prefix)
-%module(package=`package_name`) universal_compaction_options
+%define ROCKSDB_MODULE(name_prefix, ...)
+%module(## __VA_ARGS__) name_prefix
 %{
 #define SWIG_FILE_WITH_INIT
 #include <rocksdb/c.h>

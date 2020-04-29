@@ -13,7 +13,8 @@ i_files = [
     "cuckoo_options",
     "options",
     "ratelimiter",
-    "universal_compaction_options"
+    "universal_compaction_options",
+    "fifo_compaction_options",
 ]
 ext_modules = [Extension(f"zeroae.rocksdb.c._{i_file}",
                       libraries=["rocksdb"],
