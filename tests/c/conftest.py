@@ -1,7 +1,7 @@
 import pytest
 from zeroae.rocksdb.c import (
     block_based_options, cuckoo_options, options, ratelimiter,
-    universal_compaction_options, fifo_compaction_options, cache, env, dbpath
+    universal_compaction_options, fifo_compaction_options, cache, env, dbpath, flushoptions
 )
 
 
@@ -47,6 +47,12 @@ def rocksdb_fifo_compaction_options():
     yield rv
     fifo_compaction_options.destroy(rv)
 
+
+@pytest.fixture
+def rocksdb_flushoptions():
+    rv = flushoptions.create()
+    yield rv
+    flushoptions.destroy(rv)
 
 @pytest.fixture
 def rocksdb_options():
