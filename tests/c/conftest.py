@@ -2,7 +2,7 @@ import pytest
 from zeroae.rocksdb.c import (
     block_based_options, cuckoo_options, options, ratelimiter,
     universal_compaction_options, fifo_compaction_options, cache, env, dbpath, flushoptions, restore_options,
-    compactoptions, writeoptions, readoptions, memory_consumers, perfcontext
+    compactoptions, writeoptions, readoptions, memory_consumers, perfcontext, optimistictransaction_options
 )
 
 
@@ -68,6 +68,13 @@ def rocksdb_memory_consumers():
     rv = memory_consumers.create()
     yield rv
     memory_consumers.destroy(rv)
+
+
+@pytest.fixture
+def rocksdb_optimistictransaction_options():
+    rv = optimistictransaction_options.create()
+    yield rv
+    optimistictransaction_options.destroy(rv)
 
 
 @pytest.fixture
