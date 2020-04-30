@@ -3,7 +3,7 @@ from zeroae.rocksdb.c import (
     block_based_options, cuckoo_options, options, ratelimiter,
     universal_compaction_options, fifo_compaction_options, cache, env, dbpath, flushoptions, restore_options,
     compactoptions, writeoptions, readoptions, memory_consumers, perfcontext, optimistictransaction_options,
-    transaction_options, transactiondb_options
+    transaction_options, transactiondb_options, sstfilewriter, envoptions
 )
 
 
@@ -47,6 +47,13 @@ def rocksdb_dbpath(tmp_path):
 def rocksdb_env(request):
     rv = request.param()
     yield rv
+    env.destroy(rv)
+
+
+@pytest.fixture
+def rocksdb_envoptions():
+    rv = envoptions.create()
+    yield
     env.destroy(rv)
 
 
@@ -111,6 +118,13 @@ def rocksdb_restore_options():
     rv = restore_options.create()
     yield rv
     restore_options.destroy(rv)
+
+
+@pytest.fixture
+def rocksdb_sstfilewriter(rocksdb_envoptions, rocksdb_options):
+    rv = sstfilewriter.create(rocksdb_envoptions, rocksdb_options)
+    yield rv
+    sstfilewriter.destroy(rv)
 
 
 @pytest.fixture
