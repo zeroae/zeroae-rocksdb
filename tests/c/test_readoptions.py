@@ -41,10 +41,6 @@ def test_set_tailing(rocksdb_readoptions):
     readoptions.set_tailing(rocksdb_readoptions, 1)
 
 
-def test_set_managed(rocksdb_readoptions):
-    readoptions.set_managed(rocksdb_readoptions, 0)
-
-
 def test_set_readahead_size(rocksdb_readoptions):
     readoptions.set_readahead_size(rocksdb_readoptions, 1024)
 

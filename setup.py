@@ -8,29 +8,14 @@ import os
 with open("README.rst") as readme_file:
     readme = readme_file.read()
 
-i_files = [
-    "backup_engine",
-    "backup_engine_info",
-    "block_based_options",
-    "cache",
-    "compactionfiltercontext",
-    "compactoptions",
-    "cuckoo_options",
-    "dbpath",
-    "env",
-    "envoptions",
-    "fifo_compaction_options",
-    "flushoptions",
-    "options",
-    "ratelimiter",
-    "readoptions",
-    "restore_options",
-    "universal_compaction_options",
-    "writeoptions",
-]
-ext_modules = [Extension(f"zeroae.rocksdb.c._{i_file}",
+c_module = "zeroae/rocksdb/c"
+(_, _, filenames) = next(os.walk(c_module), (None, None, []))
+
+i_files = sorted([f.replace('.i', '') for f in filenames if f.endswith('.i') and f != "c.i"])
+
+ext_modules = [Extension(f"{c_module.replace('/', '.')}._{i_file}",
                       libraries=["rocksdb"],
-                      sources=[f"zeroae/rocksdb/c/{i_file}.i"],
+                      sources=[f"{c_module}/{i_file}.i"],
                       swig_opts=["-py3",
                                  f"-I{os.environ['CONDA_PREFIX']}/include"]
                       )
