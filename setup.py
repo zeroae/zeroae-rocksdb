@@ -23,6 +23,7 @@ i_files = [
     "ratelimiter",
     "restore_options",
     "universal_compaction_options",
+    "writeoptions",
 ]
 ext_modules = [Extension(f"zeroae.rocksdb.c._{i_file}",
                       libraries=["rocksdb"],
