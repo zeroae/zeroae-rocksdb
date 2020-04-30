@@ -1,7 +1,6 @@
 from zeroae.rocksdb.c import env
 
 
-
 def test_create_destroy_default():
     rv = env.create_default()
     assert rv is not None
