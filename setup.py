@@ -20,6 +20,7 @@ i_files = [
     "flushoptions",
     "options",
     "ratelimiter",
+    "restore_options",
     "universal_compaction_options",
 ]
 ext_modules = [Extension(f"zeroae.rocksdb.c._{i_file}",
