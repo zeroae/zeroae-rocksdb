@@ -21,6 +21,7 @@ i_files = [
     "flushoptions",
     "options",
     "ratelimiter",
+    "readoptions",
     "restore_options",
     "universal_compaction_options",
     "writeoptions",

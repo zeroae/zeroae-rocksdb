@@ -2,7 +2,7 @@ import pytest
 from zeroae.rocksdb.c import (
     block_based_options, cuckoo_options, options, ratelimiter,
     universal_compaction_options, fifo_compaction_options, cache, env, dbpath, flushoptions, restore_options,
-    compactoptions, writeoptions
+    compactoptions, writeoptions, readoptions
 )
 
 
@@ -74,6 +74,13 @@ def rocksdb_ratelimiter():
     rv = ratelimiter.create(1024, 1000, 1)
     yield rv
     ratelimiter.destroy(rv)
+
+
+@pytest.fixture
+def rocksdb_readoptions():
+    rv = readoptions.create()
+    yield rv
+    readoptions.destroy(rv)
 
 
 @pytest.fixture
