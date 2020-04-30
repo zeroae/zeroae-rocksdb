@@ -12,6 +12,7 @@ i_files = [
     "block_based_options",
     "cache",
     "compactionfiltercontext",
+    "compactoptions",
     "cuckoo_options",
     "dbpath",
     "env",
