@@ -10,6 +10,7 @@ with open("README.rst") as readme_file:
 
 i_files = [
     "backup_engine",
+    "backup_engine_info",
     "block_based_options",
     "cache",
     "compactionfiltercontext",
