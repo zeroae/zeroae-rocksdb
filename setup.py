@@ -17,6 +17,7 @@ i_files = [
     "env",
     "envoptions",
     "fifo_compaction_options",
+    "flushoptions",
     "options",
     "ratelimiter",
     "universal_compaction_options",
