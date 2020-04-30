@@ -9,6 +9,8 @@ with open("README.rst") as readme_file:
     readme = readme_file.read()
 
 i_files = [
+    "backup_engine",
+    "backup_engine_info",
     "block_based_options",
     "cache",
     "compactionfiltercontext",
