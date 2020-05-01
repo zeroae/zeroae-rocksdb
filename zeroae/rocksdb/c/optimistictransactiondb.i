@@ -12,6 +12,6 @@ ROCKSDB_MODULE_HEADER(optimistictransactiondb, "zeroae.rocksdb.c")
 
 //
 %rename("begin_transaction") "rocksdb_optimistictransaction_begin";
-%newobject begin;
+%newobject begin_transaction;
 
 ROCKSDB_MODULE_FOOTER()
