@@ -3,7 +3,7 @@ from zeroae.rocksdb.c import (
     block_based_options, cuckoo_options, options, ratelimiter,
     universal_compaction_options, fifo_compaction_options, cache, env, dbpath, flushoptions, restore_options,
     compactoptions, writeoptions, readoptions, memory_consumers, perfcontext, optimistictransaction_options,
-    transaction_options, transactiondb_options, sstfilewriter, envoptions
+    transaction_options, transactiondb_options, sstfilewriter, envoptions, ingestexternalfileoptions
 )
 
 
@@ -69,6 +69,13 @@ def rocksdb_flushoptions():
     rv = flushoptions.create()
     yield rv
     flushoptions.destroy(rv)
+
+
+@pytest.fixture
+def rocksdb_ingestexternalfileoptions():
+    rv = ingestexternalfileoptions.create()
+    yield rv
+    ingestexternalfileoptions.destroy(rv)
 
 
 @pytest.fixture
