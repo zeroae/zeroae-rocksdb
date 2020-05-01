@@ -1,3 +1,5 @@
+import pytest
+
 from zeroae.rocksdb.c import perfcontext
 
 
@@ -18,6 +20,14 @@ def test_report(rocksdb_perfcontext):
     assert result is not None
 
 
+@pytest.mark.xfail(reason="swig:enums")
 def test_metric(rocksdb_perfcontext):
     val = perfcontext.metric(rocksdb_perfcontext, 0)
     assert val == 0
+    assert False
+
+
+@pytest.mark.xfail(reason="swig:enums")
+def test_set_perf_level():
+    perfcontext.set_perf_level(0)
+    assert False
