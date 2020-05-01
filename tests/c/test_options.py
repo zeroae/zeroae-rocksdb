@@ -578,3 +578,8 @@ def test_set_atomic_flush(rocksdb_options):
 
 def test_set_row_cache(rocksdb_options, rocksdb_cache_lru):
     options.set_row_cache(rocksdb_options, rocksdb_cache_lru)
+
+
+@pytest.mark.xfail
+def test_get_options_from_string():
+    assert False

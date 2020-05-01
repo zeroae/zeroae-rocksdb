@@ -1,5 +1,7 @@
 %include "c.i"
- ROCKSDB_MODULE_HEADER(options, package="zeroae.rocksdb.c")
+ROCKSDB_MODULE_HEADER(options, package="zeroae.rocksdb.c")
+
+ROCKSDB_INCLUDE_FUNCTION(get_options_from_string)
 
 // Constructor/Destructor for rocksdb_options_t
 %newobject create;
@@ -8,4 +10,4 @@
 // malloc()-ed return values
 %newobject statistics_get_string;
 
-%include <rocksdb/c.h>
+ROCKSDB_MODULE_FOOTER()
