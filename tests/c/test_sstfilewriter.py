@@ -3,6 +3,7 @@ import pytest
 from zeroae.rocksdb.c import sstfilewriter
 
 
+@pytest.skip(reason="GH-64")
 def test_create_destroy(rocksdb_envoptions, rocksdb_options):
     rv = sstfilewriter.create(rocksdb_envoptions, rocksdb_options)
     assert rv is not None
