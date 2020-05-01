@@ -51,11 +51,12 @@ ROCKSDB_IGNORE_MODULE(writebatch)
 ROCKSDB_IGNORE_MODULE(writeoptions)
 
 // Typemaps
-%apply (const char *STRING, size_t LENGTH) { (const char* key, size_t keylen) }
-%apply (const char *STRING, size_t LENGTH) { (const char* val, size_t vallen) }
-
-%apply (const char *STRING, size_t LENGTH) { (const char* start_key, size_t start_key_len) }
-%apply (const char *STRING, size_t LENGTH) { (const char* limit_key, size_t limit_key_len) }
+%apply (const char *STRING, size_t LENGTH) {
+    (const char* key, size_t keylen),
+    (const char* val, size_t vallen),
+    (const char* start_key, size_t start_key_len),
+    (const char* limit_key, size_t limit_key_len)
+}
 
 // Memory Management
 // rocksdb_t
