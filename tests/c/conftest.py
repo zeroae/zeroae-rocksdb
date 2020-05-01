@@ -3,7 +3,8 @@ from zeroae.rocksdb.c import (
     block_based_options, cuckoo_options, options, ratelimiter,
     universal_compaction_options, fifo_compaction_options, cache, env, dbpath, flushoptions, restore_options,
     compactoptions, writeoptions, readoptions, memory_consumers, perfcontext, optimistictransaction_options,
-    transaction_options, transactiondb_options, sstfilewriter, envoptions, ingestexternalfileoptions, writebatch_wi
+    transaction_options, transactiondb_options, sstfilewriter, envoptions, ingestexternalfileoptions, writebatch_wi,
+    writebatch
 )
 
 
@@ -153,6 +154,13 @@ def rocksdb_universal_compaction_options():
     rv = universal_compaction_options.create()
     yield rv
     universal_compaction_options.destroy(rv)
+
+
+@pytest.fixture
+def rocksdb_writebatch():
+    rv = writebatch.create()
+    yield rv
+    writebatch.destroy(rv)
 
 
 @pytest.fixture
