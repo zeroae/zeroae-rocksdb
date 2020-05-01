@@ -17,6 +17,26 @@
 %rename("%(strip:[rocksdb_" #name_prefix "_])s", regexmatch$name="^rocksdb_" #name_prefix "_") "";
 %enddef
 
+/**
+ * This macro ignores all functions starting with the name_prefix
+ */
+%define ROCKSDB_IGNORE_MODULE(name_prefix)
+%rename("$ignore", regexmatch$name="^rocksdb_" #name_prefix "_") "";
+%enddef
+
+/**
+ * This includes the function name
+ */
+%define ROCKSDB_INCLUDE_FUNCTION(name)
+%rename(#name) "rocksdb_" #name;
+%enddef
+
+/**
+ * This excludes the function name
+ */
+%define ROCKSDB_IGNORE_FUNCTION(name)
+%ignore "rocksdb_" #name;
+%enddef
 
 /**
  * This macro includes the rocksdb/c.h file for rendering.
