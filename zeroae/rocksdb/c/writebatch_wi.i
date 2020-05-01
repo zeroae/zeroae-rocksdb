@@ -2,10 +2,12 @@
 ROCKSDB_MODULE_HEADER(writebatch_wi, "zeroae.rocksdb.c")
 
 // Typemaps
-%apply (const char *STRING, size_t LENGTH) { (const char* key, size_t klen) }
-%apply (const char *STRING, size_t LENGTH) { (const char* key, size_t keylen) }
-%apply (const char *STRING, size_t LENGTH) { (const char* val, size_t vlen) }
-%apply (const char *STRING, size_t LENGTH) { (const char* blob, size_t len) }
+%apply (const char *STRING, size_t LENGTH) {
+    (const char* key, size_t klen),
+    (const char* key, size_t keylen),
+    (const char* val, size_t vlen),
+    (const char* blob, size_t len)
+}
 
 // Does not exist upstream
 %ignore rocksdb_writebatch_wi_create_from;
