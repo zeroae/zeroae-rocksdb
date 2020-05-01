@@ -5,21 +5,33 @@
 
 %include "stdint.i"
 
-/**
- * The char** errptr typemap,
- * This is the same as cstring_output_allocate but we call append_output,
- * even if the string is NULL.
+/*
+ * %cstring_output_allocate_keep_null(TYPEMAP, RELEASE)
+ *
+ * This macro is used to return Character data that was
+ * allocated with new or malloc. NULLs are returned as
+ * well.
+ *
+ *     %cstring_output_allocate_keep_null(Char **outx, free($1));
+ *     void foo(Char **outx) {
+ *         *outx = (Char *) malloc(512);
+ *         sprintf(outx,"blah blah\n");
+ *     }
  */
-%typemap(in, noblock=1, numinputs=0) char** errptr($*1_ltype temp=NULL) {
+
+%define %cstring_output_allocate_keep_null(TYPEMAP, RELEASE)
+%typemap(in, noblock=1, numinputs=0) TYPEMAP ($*1_ltype temp=NULL) {
     $1 = &temp;
 }
-%typemap(freearg,match="in") char** errptr "";
-%typemap(argout,noblock=1,fragment="SWIG_FromCharPtr") char** errptr {
+%typemap(freearg,match="in") TYPEMAP "";
+%typemap(argout,noblock=1,fragment="SWIG_FromCharPtr") TYPEMAP {
     %append_output(SWIG_FromCharPtr(*$1));
     if (*$1) {
-        free($1);
+        RELEASE;
     }
 }
+enddef
+
 
 /**
  * This macro selects only the rocksdb functions that start
@@ -31,6 +43,8 @@
 %rename("$ignore", notregexmatch$name="^rocksdb_" #name_prefix "_") "";
 // Strip rocksdb_ ## name_prefix _ from function names
 %rename("%(strip:[rocksdb_" #name_prefix "_])s", regexmatch$name="^rocksdb_" #name_prefix "_") "";
+// Typemaps
+%cstring_output_allocate_keep_null(char **errptr, rocksdb_free($1));
 %enddef
 
 /**
