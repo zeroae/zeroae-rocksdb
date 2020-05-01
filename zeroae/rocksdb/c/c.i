@@ -6,6 +6,22 @@
 %include "stdint.i"
 
 /**
+ * The char** errptr typemap,
+ * This is the same as cstring_output_allocate but we call append_output,
+ * even if the string is NULL.
+ */
+%typemap(in, noblock=1, numinputs=0) char** errptr($*1_ltype temp=NULL) {
+    $1 = &temp;
+}
+%typemap(freearg,match="in") char** errptr "";
+%typemap(argout,noblock=1,fragment="SWIG_FromCharPtr") char** errptr {
+    %append_output(SWIG_FromCharPtr(*$1));
+    if (*$1) {
+        free($1);
+    }
+}
+
+/**
  * This macro selects only the rocksdb functions that start
  * with the name_prefix (after having rocksdb_) removed.
  */
