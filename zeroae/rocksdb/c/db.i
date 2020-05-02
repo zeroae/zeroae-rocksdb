@@ -51,6 +51,7 @@ ROCKSDB_IGNORE_MODULE(writebatch)
 ROCKSDB_IGNORE_MODULE(writeoptions)
 
 // Typemaps
+%cstring_output_allocate_keep_null(char **errptr, rocksdb_free($1));
 %apply (const char *STRING, size_t LENGTH) {
     (const char* key, size_t keylen),
     (const char* val, size_t vallen),
