@@ -4,6 +4,7 @@
 %}
 
 %include "stdint.i"
+%include "typemaps.i"
 
 /*
  * %cstring_output_allocate_keep_null(TYPEMAP, RELEASE)
