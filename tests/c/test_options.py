@@ -3,10 +3,8 @@ import pytest
 from zeroae.rocksdb.c import options
 
 
-def test_create_destroy():
-    opt = options.create()
-    assert opt is not None
-    options.destroy(opt)
+def test_fixture(rocksdb_options):
+    assert rocksdb_options is not None
 
 
 def test_set_block_based_table_factory(rocksdb_options, rocksdb_block_based_table_options):

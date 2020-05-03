@@ -3,12 +3,8 @@ import pytest
 from zeroae.rocksdb.c import db
 
 
-@pytest.mark.xfail
-def test_open(rocksdb_options, tmp_path):
-    rv, err = db.open(rocksdb_options, str(tmp_path))
-    assert rv is not None
-
-    assert False
+def test_fixture(rocksdb_db):
+    assert rocksdb_db is not None
 
 
 @pytest.mark.xfail
@@ -71,14 +67,9 @@ def test_column_family_handle_destroy():
     assert False
 
 
-@pytest.mark.xfail
-def test_close():
-    assert False
-
-
-@pytest.mark.xfail
-def test_put():
-    assert False
+def test_put(rocksdb_db, rocksdb_writeoptions):
+    err = db.put(rocksdb_db, rocksdb_writeoptions, "key", "value")
+    assert err is None
 
 
 @pytest.mark.xfail
@@ -86,9 +77,14 @@ def test_put_cf():
     assert False
 
 
-@pytest.mark.xfail
-def test_delete():
-    assert False
+def test_delete(rocksdb_db, rocksdb_writeoptions):
+    err = db.delete(rocksdb_db, rocksdb_writeoptions, "key")
+    assert err is None
+    err = db.put(rocksdb_db, rocksdb_writeoptions, "key", "value")
+    assert err is None
+    err = db.delete(rocksdb_db, rocksdb_writeoptions, "key")
+    assert err is None
+
 
 
 @pytest.mark.xfail
@@ -116,9 +112,13 @@ def test_write():
     assert False
 
 
-@pytest.mark.xfail
-def test_get():
-    assert False
+def test_get_exists(rocksdb_db, rocksdb_readoptions, rocksdb_writeoptions):
+    val = db.get(rocksdb_db, rocksdb_readoptions, "dne")
+    assert val is None
+
+    db.put(rocksdb_db, rocksdb_writeoptions, "key", "value")
+    val = db.get(rocksdb_db, rocksdb_readoptions, "key")
+    assert val == "value"
 
 
 @pytest.mark.xfail

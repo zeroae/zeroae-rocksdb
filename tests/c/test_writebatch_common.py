@@ -16,6 +16,10 @@ def writebatch_obj(writebatch_impl):
         return writebatch_impl.create()
 
 
+def test_fixture(writebatch_obj):
+    assert writebatch_obj is not None
+
+
 def test_clear(writebatch_obj, writebatch_impl):
     writebatch_impl.put(writebatch_obj, "key", "value")
     writebatch_impl.clear(writebatch_obj)
