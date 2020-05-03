@@ -1,10 +1,8 @@
 from zeroae.rocksdb.c import ingestexternalfileoptions
 
 
-def test_create():
-    rv = ingestexternalfileoptions.create()
-    assert rv is not None
-    ingestexternalfileoptions.destroy(rv)
+def test_fixture(rocksdb_ingestexternalfileoptions):
+    assert rocksdb_ingestexternalfileoptions is not None
 
 
 def test_set_move_files(rocksdb_ingestexternalfileoptions):

@@ -1,7 +1,3 @@
-from zeroae.rocksdb.c import envoptions
 
-
-def test_create():
-    opt = envoptions.create()
-    assert opt is not None
-    envoptions.destroy(opt)
+def test_fixture(rocksdb_envoptions):
+    assert rocksdb_envoptions is not None

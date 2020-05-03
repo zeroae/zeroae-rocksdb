@@ -3,10 +3,8 @@ import pytest
 from zeroae.rocksdb.c import perfcontext
 
 
-def test_create():
-    rv = perfcontext.create()
-    assert rv is not None
-    perfcontext.destroy(rv)
+def test_fixture(rocksdb_perfcontext):
+    assert rocksdb_perfcontext is not None
 
 
 def test_reset(rocksdb_perfcontext):

@@ -1,10 +1,8 @@
 from zeroae.rocksdb.c import writeoptions
 
 
-def test_create_destroy():
-    wopt = writeoptions.create()
-    assert wopt is not None
-    writeoptions.destroy(wopt)
+def test_fixtures(rocksdb_writeoptions):
+    assert rocksdb_writeoptions is not None
 
 
 def test_set_sync(rocksdb_writeoptions):

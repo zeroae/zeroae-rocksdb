@@ -1,10 +1,8 @@
 import zeroae.rocksdb.c.universal_compaction_options as uco
 
 
-def test_create_destroy():
-    rv = uco.create()
-    assert rv is not None
-    uco.destroy(rv)
+def test_fixture(rocksdb_universal_compaction_options):
+    assert rocksdb_universal_compaction_options is not None
 
 
 def test_set_size_ratio(rocksdb_universal_compaction_options):

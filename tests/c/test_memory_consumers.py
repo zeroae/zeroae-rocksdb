@@ -3,10 +3,8 @@ import pytest
 from zeroae.rocksdb.c import memory_consumers
 
 
-def test_create():
-    rv = memory_consumers.create()
-    assert rv is not None
-    memory_consumers.destroy(rv)
+def test_fixture(rocksdb_memory_consumers):
+    assert rocksdb_memory_consumers is not None
 
 
 @pytest.mark.xfail

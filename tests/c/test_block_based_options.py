@@ -3,10 +3,8 @@ import pytest
 from zeroae.rocksdb.c import block_based_options as bbto
 
 
-def test_create_destroy():
-    opt = bbto.create()
-    assert opt is not None
-    bbto.destroy(opt)
+def test_fixture(rocksdb_block_based_table_options):
+    assert rocksdb_block_based_table_options is not None
 
 
 def test_set_block_size(rocksdb_block_based_table_options):

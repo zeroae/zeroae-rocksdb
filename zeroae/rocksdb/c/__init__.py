@@ -9,10 +9,11 @@ py_files = [filename.replace(".py", "")
             for filename in filenames
             if filename.endswith(".py")]
 py_files.remove("__init__")
-py_files.remove("db")
 
 for module in py_files:
     import_module(f".{module}", "zeroae.rocksdb.c")
+
+__all__ = py_files
 
 del os, import_module
 

@@ -1,10 +1,8 @@
 from zeroae.rocksdb.c import  cuckoo_options
 
 
-def test_create_destroy():
-    opt = cuckoo_options.create()
-    assert opt is not None
-    cuckoo_options.destroy(opt)
+def test_fixture(rocksdb_cuckoo_table_options):
+    assert rocksdb_cuckoo_table_options is not None
 
 
 def test_set_hash_ratio(rocksdb_cuckoo_table_options):
