@@ -113,14 +113,12 @@ def test_write():
 
 
 def test_get_exists(rocksdb_db, rocksdb_readoptions, rocksdb_writeoptions):
-    db.put(rocksdb_db, rocksdb_writeoptions, "key", "value")
-    val, err = db.get(rocksdb_db, rocksdb_readoptions, "key")
-    assert val == "value"
-
-
-def test_get_not_exists(rocksdb_db, rocksdb_readoptions, rocksdb_writeoptions):
-    val, err = db.get(rocksdb_db, rocksdb_readoptions, "dne")
+    val = db.get(rocksdb_db, rocksdb_readoptions, "dne")
     assert val is None
+
+    db.put(rocksdb_db, rocksdb_writeoptions, "key", "value")
+    val = db.get(rocksdb_db, rocksdb_readoptions, "key")
+    assert val == "value"
 
 
 @pytest.mark.xfail

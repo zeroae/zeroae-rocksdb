@@ -33,8 +33,7 @@ def rocksdb_cuckoo_table_options():
 @pytest.fixture()
 def rocksdb_db(rocksdb_options, tmp_path):
     options.set_create_if_missing(rocksdb_options, 1)
-    rv, err = db.open(rocksdb_options, str(tmp_path/"db"))
-    assert err is None
+    rv = db.open(rocksdb_options, str(tmp_path/"db"))
     yield rv
     db.close(rv)
 
