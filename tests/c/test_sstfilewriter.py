@@ -3,12 +3,8 @@ import pytest
 from zeroae.rocksdb.c import sstfilewriter
 
 
-@pytest.mark.skip(reason="GH-64")
-def test_create_destroy(rocksdb_envoptions, rocksdb_options):
-    rv = sstfilewriter.create(rocksdb_envoptions, rocksdb_options)
-    assert rv is not None
-    sstfilewriter.destroy(rv)
-
+def test_fixture(rocksdb_sstfilewriter):
+    assert rocksdb_sstfilewriter is not None
 
 @pytest.mark.xfail
 def test_create_with_comparator(rocksdb_envoptions, rocksdb_options):

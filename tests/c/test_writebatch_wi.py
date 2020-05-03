@@ -3,10 +3,8 @@ import pytest
 from zeroae.rocksdb.c import writebatch_wi
 
 
-def test_create():
-    rv = writebatch_wi.create(1024, 0)
-    assert rv is not None
-    writebatch_wi.destroy(rv)
+def test_fixture(rocksdb_writebatch_wi):
+    assert rocksdb_writebatch_wi is not None
 
 
 @pytest.mark.xfail

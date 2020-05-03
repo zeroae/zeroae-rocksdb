@@ -1,50 +1,87 @@
 %{
 #define SWIG_FILE_WITH_INIT
 #include <rocksdb/c.h>
+
+// TODO: This makes the interface non-reentrant
+char* ERRMSG = NULL;
 %}
 
+%include "typemaps.i"
 %include "stdint.i"
+%include "cstring.i"
+%include "exception.i"
+
+/*
+ * Convert errptr to an exception
+ */
+%typemap(in,noblock=1,numinputs=0) char** errptr {
+  $1 = &ERRMSG;
+}
+%typemap(freearg,match="in") char** errptr "";
+%typemap(argout,noblock=1) char** errptr {
+  if (*$1) {
+    SWIG_exception(SWIG_RuntimeError, *$1);
+  }
+}
+
 
 /*
  * %cstring_output_allocate_keep_null(TYPEMAP, RELEASE)
  *
- * This macro is used to return Character data that was
- * allocated with new or malloc. NULLs are returned as
- * well.
- *
- *     %cstring_output_allocate_keep_null(Char **outx, free($1));
- *     void foo(Char **outx) {
- *         *outx = (Char *) malloc(512);
- *         sprintf(outx,"blah blah\n");
- *     }
+ * This macro replaces the argout typemap of %cstring_output_allocate
+ * so it appends the return value even if it is NULL.
  */
-
 %define %cstring_output_allocate_keep_null(TYPEMAP, RELEASE)
-%typemap(in, noblock=1, numinputs=0) TYPEMAP ($*1_ltype temp=NULL) {
-    $1 = &temp;
-}
-%typemap(freearg,match="in") TYPEMAP "";
+%cstring_output_allocate(TYPEMAP, RELEASE);
 %typemap(argout,noblock=1,fragment="SWIG_FromCharPtr") TYPEMAP {
-    %append_output(SWIG_FromCharPtr(*$1));
-    if (*$1) {
-        RELEASE;
-    }
+  %append_output(SWIG_FromCharPtr(*$1));
+  if (*$1) {
+      RELEASE;
+  }
 }
-enddef
+%enddef
 
+/*
+ * %cstring_output_allocate_size_keep_null(TYPEMAP, SIZE, RELEASE)
+ *
+ * This macro replaces the argout typemap of %cstring_output_allocate_size
+ * so it appends the return value even if it is NULL.
+ */
+%define %cstring_output_allocate_size_keep_null(TYPEMAP, SIZE, RELEASE)
+%cstring_output_allocate_size(TYPEMAP, SIZE, RELEASE);
+%typemap(argout,noblock=1,fragment="SWIG_FromCharPtrAndSize")(TYPEMAP,SIZE) {
+  %append_output(SWIG_FromCharPtrAndSize(*$1,*$2));
+  if (*$1) {
+    RELEASE;
+  }
+}
+%enddef
+
+/**
+ * Wrap functions that return char* rv, size_t* rvlen
+ */
+%define %wrap_rv(NEW, NEW_SIG, OLD, OLD_ARGS)
+%ignore OLD;
+%rename(NEW) wrap_##OLD;
+%inline %{
+  void wrap_##OLD NEW_SIG {
+    *rv = OLD OLD_ARGS;
+  }
+%}
+%enddef
 
 /**
  * This macro selects only the rocksdb functions that start
  * with the name_prefix (after having rocksdb_) removed.
+ *
+ *  - Ignore all functions that dont' start with rocksdb_ ## name_prefix _
+ *  - Strip rocksdb_ ## name_prefix _ from function names
  */
 %define ROCKSDB_MODULE_HEADER(name_prefix, ...)
 %module(## __VA_ARGS__) name_prefix
-// Ignore all functions that dont' start with rocksdb_ ## name_prefix _
 %rename("$ignore", notregexmatch$name="^rocksdb_" #name_prefix "_") "";
-// Strip rocksdb_ ## name_prefix _ from function names
 %rename("%(strip:[rocksdb_" #name_prefix "_])s", regexmatch$name="^rocksdb_" #name_prefix "_") "";
-// Typemaps
-%cstring_output_allocate_keep_null(char **errptr, rocksdb_free($1));
+%cstring_output_allocate_size_keep_null(char** rv, size_t* rvlen, rocksdb_free($1));
 %enddef
 
 /**

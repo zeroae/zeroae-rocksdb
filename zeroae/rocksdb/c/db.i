@@ -51,12 +51,11 @@ ROCKSDB_IGNORE_MODULE(writebatch)
 ROCKSDB_IGNORE_MODULE(writeoptions)
 
 // Typemaps
-%apply (const char *STRING, size_t LENGTH) {
-    (const char* key, size_t keylen),
-    (const char* val, size_t vallen),
-    (const char* start_key, size_t start_key_len),
-    (const char* limit_key, size_t limit_key_len)
-}
+%cstring_output_allocate_size_keep_null(char **rv, size_t* rvlen, rocksdb_free(*$1));
+%cstring_input_binary(const char* key, size_t keylen);
+%cstring_input_binary(const char* val, size_t vallen);
+%cstring_input_binary(const char* start_key, size_t start_key_len);
+%cstring_input_binary(const char* limit_key, size_t limit_key_len);
 
 // Memory Management
 // rocksdb_t
@@ -86,5 +85,15 @@ ROCKSDB_IGNORE_MODULE(writeoptions)
 
 // global
 %delobject free;
+
+
+// Wrap functions with return values
+%wrap_rv(get, (rocksdb_t* db, const rocksdb_readoptions_t* options,
+               const char* key,
+               size_t keylen, char** rv, size_t* rvlen, char** errptr),
+         rocksdb_get, (db, options, key, keylen, rvlen, errptr))
+%wrap_rv(get_cf, (rocksdb_t* db, const rocksdb_readoptions_t* options, rocksdb_column_family_handle_t* column_family,
+                  const char* key, size_t keylen, char** rv, size_t* rvlen, char** errptr),
+         rocksdb_get_cf, (db, options, column_family, key, keylen, rvlen, errptr))
 
 ROCKSDB_MODULE_FOOTER()

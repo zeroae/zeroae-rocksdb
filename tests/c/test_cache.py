@@ -1,10 +1,8 @@
 import zeroae.rocksdb.c.cache as cache
 
 
-def test_create_destroy_lru():
-    c = cache.create_lru(1024)
-    assert c is not None
-    cache.destroy(c)
+def test_fixture(rocksdb_cache_lru):
+    assert rocksdb_cache_lru is not None
 
 
 def test_set_capacity(rocksdb_cache_lru):

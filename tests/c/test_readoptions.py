@@ -3,10 +3,8 @@ import pytest
 from zeroae.rocksdb.c import readoptions
 
 
-def test_create():
-    rv = readoptions.create()
-    assert rv is not None
-    readoptions.destroy(rv)
+def test_fixture(rocksdb_readoptions):
+    assert rocksdb_readoptions is not None
 
 
 def test_set_verify_checksums(rocksdb_readoptions):

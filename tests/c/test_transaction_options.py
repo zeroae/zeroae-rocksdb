@@ -1,10 +1,8 @@
 from zeroae.rocksdb.c import transaction_options
 
 
-def test_create():
-    rv = transaction_options.create()
-    assert rv is not None
-    transaction_options.destroy(rv)
+def test_fixture(rocksdb_transaction_options):
+    assert rocksdb_transaction_options is not None
 
 
 def test_set_set_snapshot(rocksdb_transaction_options):

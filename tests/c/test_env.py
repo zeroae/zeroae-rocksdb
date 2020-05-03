@@ -1,16 +1,8 @@
 from zeroae.rocksdb.c import env
 
 
-def test_create_destroy_default():
-    rv = env.create_default()
-    assert rv is not None
-    env.destroy(rv)
-
-
-def test_create_destroy_mem():
-    rv = env.create_mem()
-    assert rv is not None
-    env.destroy(rv)
+def test_fixture(rocksdb_env):
+    assert rocksdb_env is not None
 
 
 def test_set_background_threads(rocksdb_env):

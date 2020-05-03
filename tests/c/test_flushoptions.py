@@ -1,10 +1,8 @@
 from zeroae.rocksdb.c import flushoptions
 
 
-def test_create():
-    fopt = flushoptions.create()
-    assert fopt is not None
-    flushoptions.destroy(fopt)
+def test_fixture(rocksdb_flushoptions):
+    assert rocksdb_flushoptions is not None
 
 
 def test_set_wait(rocksdb_flushoptions):

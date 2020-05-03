@@ -1,11 +1,5 @@
 import pytest
-from zeroae.rocksdb.c import (
-    block_based_options, cuckoo_options, options, ratelimiter,
-    universal_compaction_options, fifo_compaction_options, cache, env, dbpath, flushoptions, restore_options,
-    compactoptions, writeoptions, readoptions, memory_consumers, perfcontext, optimistictransaction_options,
-    transaction_options, transactiondb_options, sstfilewriter, envoptions, ingestexternalfileoptions, writebatch_wi,
-    writebatch
-)
+from zeroae.rocksdb.c import *
 
 
 @pytest.fixture
@@ -36,11 +30,19 @@ def rocksdb_cuckoo_table_options():
     cuckoo_options.destroy(rv)
 
 
+@pytest.fixture()
+def rocksdb_db(rocksdb_options, tmp_path):
+    options.set_create_if_missing(rocksdb_options, 1)
+    rv = db.open(rocksdb_options, str(tmp_path/"db"))
+    yield rv
+    db.close(rv)
+
+
 @pytest.fixture
 def rocksdb_dbpath(tmp_path):
-    db = dbpath.create(str(tmp_path), 10)
-    assert db is not None
-    dbpath.destroy(db)
+    rv = dbpath.create(str(tmp_path), 10)
+    yield rv
+    dbpath.destroy(rv)
 
 
 @pytest.fixture(params=[env.create_default,
@@ -54,8 +56,8 @@ def rocksdb_env(request):
 @pytest.fixture
 def rocksdb_envoptions():
     rv = envoptions.create()
-    yield
-    env.destroy(rv)
+    yield rv
+    envoptions.destroy(rv)
 
 
 @pytest.fixture
