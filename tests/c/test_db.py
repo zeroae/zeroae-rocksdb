@@ -22,9 +22,11 @@ def test_open_as_secondary():
     assert False
 
 
-@pytest.mark.xfail
-def test_checkpoint_object_create():
-    assert False
+def test_checkpoint_object_create(rocksdb_db):
+    cp = db.checkpoint_object_create(rocksdb_db)
+    assert cp is not None
+    from zeroae.rocksdb.c import checkpoint_object
+    checkpoint_object.destroy(cp)
 
 
 @pytest.mark.xfail
