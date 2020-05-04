@@ -1,6 +1,6 @@
 import pytest
 
-from zeroae.rocksdb.c import db, livefiles
+from zeroae.rocksdb.c import db, livefiles, iter
 
 
 def test_fixture(rocksdb_db):
@@ -137,9 +137,10 @@ def test_multi_get_cf():
     assert False
 
 
-@pytest.mark.xfail
-def test_create_iterator():
-    assert False
+def test_create_iterator(rocksdb_db, rocksdb_readoptions):
+    i = db.create_iterator(rocksdb_db, rocksdb_readoptions)
+    assert i is not None
+    iter.destroy(i)
 
 
 @pytest.mark.xfail
