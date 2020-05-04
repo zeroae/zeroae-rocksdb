@@ -29,7 +29,7 @@ def test_backup_id(be_info):
 
 def test_size(be_info):
     rv = backup_engine_info.size(be_info, 0)
-    assert rv == 5657
+    assert rv == pytest.approx(5657, 5657/10)
 
 
 def test_number_files(be_info):
