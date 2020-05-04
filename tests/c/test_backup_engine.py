@@ -2,30 +2,29 @@ import pytest
 from zeroae.rocksdb.c import db as rdb, backup_engine
 
 
-@pytest.fixture
-def db(rocksdb_db, rocksdb_writeoptions):
-    for i in range(0, 10):
-        rdb.put(rocksdb_db, rocksdb_writeoptions,
-                f"key{i}", f"val{i}")
-    yield rocksdb_db
-
-
-@pytest.fixture
-def be(rocksdb_backup_engine, db):
-    backup_engine.create_new_backup(rocksdb_backup_engine, db)
-    yield rocksdb_backup_engine
 
 
 def test_fixture(rocksdb_backup_engine):
     assert rocksdb_backup_engine is not None
 
 
-def test_create_new_backup(rocksdb_backup_engine, db):
+def test_create_new_backup(rocksdb_backup_engine, rocksdb_db):
+    backup_engine.create_new_backup(rocksdb_backup_engine, rocksdb_db)
+
+
+def test_create_new_backup_flush(rocksdb_backup_engine, rocksdb_db):
+    backup_engine.create_new_backup_flush(rocksdb_backup_engine, rocksdb_db, 1)
+
+
+@pytest.fixture
+def be(rocksdb_backup_engine, rocksdb_options, rocksdb_db_dir, rocksdb_writeoptions):
+    db = rdb.open(rocksdb_options, rocksdb_db_dir)
+    for i in range(0, 10):
+        rdb.put(db, rocksdb_writeoptions,
+                f"key{i}", f"val{i}")
     backup_engine.create_new_backup(rocksdb_backup_engine, db)
-
-
-def test_create_new_backup_flush(rocksdb_backup_engine, db):
-    backup_engine.create_new_backup_flush(rocksdb_backup_engine, db, 1)
+    rdb.close(db)
+    yield rocksdb_backup_engine
 
 
 def test_purge_old_backups(be):
