@@ -1,6 +1,6 @@
 import pytest
 
-from zeroae.rocksdb.c import db
+from zeroae.rocksdb.c import db, livefiles
 
 
 def test_fixture(rocksdb_db):
@@ -84,7 +84,6 @@ def test_delete(rocksdb_db, rocksdb_writeoptions):
     assert err is None
     err = db.delete(rocksdb_db, rocksdb_writeoptions, "key")
     assert err is None
-
 
 
 @pytest.mark.xfail
@@ -221,9 +220,10 @@ def test_delete_file():
     assert False
 
 
-@pytest.mark.xfail
-def test_livefiles():
-    assert False
+def test_livefiles(rocksdb_db):
+    rv = db.livefiles(rocksdb_db)
+    assert rv is not None
+    livefiles.destroy(rv)
 
 
 @pytest.mark.xfail
