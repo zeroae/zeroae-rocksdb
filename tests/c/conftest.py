@@ -2,6 +2,19 @@ import pytest
 from zeroae.rocksdb.c import *
 
 
+@pytest.fixture()
+def rocksdb_backend_engine_dir(tmp_path_factory):
+    return str(tmp_path_factory.mktemp("db-backup", numbered=True))
+
+
+@pytest.fixture()
+def rocksdb_backup_engine(rocksdb_options, rocksdb_backend_engine_dir):
+    options.set_create_if_missing(rocksdb_options, 1)
+    rv = backup_engine.open(rocksdb_options, rocksdb_backend_engine_dir)
+    yield rv
+    backup_engine.close(rv)
+
+
 @pytest.fixture
 def rocksdb_block_based_table_options():
     rv = block_based_options.create()
@@ -31,9 +44,14 @@ def rocksdb_cuckoo_table_options():
 
 
 @pytest.fixture()
-def rocksdb_db(rocksdb_options, tmp_path):
+def rocksdb_db_dir(tmp_path_factory):
+    return str(tmp_path_factory.mktemp("db", numbered=1))
+
+
+@pytest.fixture()
+def rocksdb_db(rocksdb_options, rocksdb_db_dir):
     options.set_create_if_missing(rocksdb_options, 1)
-    rv = db.open(rocksdb_options, str(tmp_path/"db"))
+    rv = db.open(rocksdb_options, rocksdb_db_dir)
     yield rv
     db.close(rv)
 
