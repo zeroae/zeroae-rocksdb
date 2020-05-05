@@ -22,13 +22,6 @@ def test_open_as_secondary():
     assert False
 
 
-def test_checkpoint_object_create(rocksdb_db):
-    cp = db.checkpoint_object_create(rocksdb_db)
-    assert cp is not None
-    from zeroae.rocksdb.c import checkpoint_object
-    checkpoint_object.destroy(cp)
-
-
 @pytest.mark.xfail
 def test_open_column_families():
     assert False
@@ -51,11 +44,6 @@ def test_list_column_families():
 
 @pytest.mark.xfail
 def test_list_column_families_destroy():
-    assert False
-
-
-@pytest.mark.xfail
-def test_create_column_family():
     assert False
 
 
@@ -109,25 +97,6 @@ def test_merge_cf():
 
 
 @pytest.mark.xfail
-def test_write():
-    assert False
-
-
-def test_get_exists(rocksdb_db, rocksdb_readoptions, rocksdb_writeoptions):
-    val = db.get(rocksdb_db, rocksdb_readoptions, "dne")
-    assert val is None
-
-    db.put(rocksdb_db, rocksdb_writeoptions, "key", "value")
-    val = db.get(rocksdb_db, rocksdb_readoptions, "key")
-    assert val == "value"
-
-
-@pytest.mark.xfail
-def test_get_cf():
-    assert False
-
-
-@pytest.mark.xfail
 def test_multi_get():
     assert False
 
@@ -137,34 +106,13 @@ def test_multi_get_cf():
     assert False
 
 
-def test_create_iterator(rocksdb_db, rocksdb_readoptions):
-    i = db.create_iterator(rocksdb_db, rocksdb_readoptions)
-    assert i is not None
-    iter.destroy(i)
-
-
 @pytest.mark.xfail
 def test_get_updates_since():
     assert False
 
 
 @pytest.mark.xfail
-def test_create_iterator_cf():
-    assert False
-
-
-@pytest.mark.xfail
 def test_create_iterators():
-    assert False
-
-
-@pytest.mark.xfail
-def test_create_snapshot():
-    assert False
-
-
-@pytest.mark.xfail
-def test_release_snapshot():
     assert False
 
 
