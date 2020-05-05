@@ -114,14 +114,14 @@ def rocksdb_otxn_options():
 
 
 @pytest.fixture()
-def rocksdb_otxdb_dir(tmp_path_factory):
+def rocksdb_otxn_db_dir(tmp_path_factory):
     return str(tmp_path_factory.mktemp("otxdb", numbered=1))
 
 
 @pytest.fixture()
-def rocksdb_otxdb(rocksdb_options, rocksdb_db_dir):
+def rocksdb_otxn_db(rocksdb_options, rocksdb_otxn_db_dir):
     options.set_create_if_missing(rocksdb_options, 1)
-    rv = optimistictransactiondb.open(rocksdb_options, rocksdb_db_dir)
+    rv = optimistictransactiondb.open(rocksdb_options, rocksdb_otxn_db_dir)
     yield rv
     optimistictransactiondb.close(rv)
 
@@ -173,6 +173,19 @@ def rocksdb_transaction_options():
     rv = transaction_options.create()
     yield rv
     transaction_options.destroy(rv)
+
+
+@pytest.fixture()
+def rocksdb_txn_db_dir(tmp_path_factory):
+    return str(tmp_path_factory.mktemp("txdb", numbered=1))
+
+
+@pytest.fixture()
+def rocksdb_txn_db(rocksdb_options, rocksdb_transactiondb_options, rocksdb_txn_db_dir):
+    options.set_create_if_missing(rocksdb_options, 1)
+    rv = transactiondb.open(rocksdb_options, rocksdb_transactiondb_options, rocksdb_txn_db_dir)
+    yield rv
+    transactiondb.close(rv)
 
 
 @pytest.fixture
