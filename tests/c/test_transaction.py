@@ -1,21 +1,55 @@
 import pytest
 
-from zeroae.rocksdb.c import transactiondb, transaction, iter, snapshot
+from zeroae.rocksdb.c import transactiondb, transaction, iter, snapshot, optimistictransactiondb, db
+
+
+@pytest.fixture(params=["txn_db", "otxn_db"])
+def txn_db_mod_f(request):
+    if request.param == "txn_db":
+        yield transactiondb
+    elif request.param == "otxn_db":
+        yield optimistictransactiondb
 
 
 @pytest.fixture()
-def txn_db_f(rocksdb_txn_db):
-    yield rocksdb_txn_db
+def txn_db_f(txn_db_mod_f, rocksdb_txn_db, rocksdb_otxn_db):
+    if txn_db_mod_f == transactiondb:
+        yield rocksdb_txn_db
+    elif txn_db_mod_f == optimistictransactiondb:
+        yield rocksdb_otxn_db
+
 
 @pytest.fixture()
-def txn_db_mod_f():
-    yield transactiondb
+def txn_options_f(txn_db_mod_f, rocksdb_transaction_options, rocksdb_otxn_options):
+    if txn_db_mod_f == transactiondb:
+        yield rocksdb_transaction_options
+    elif txn_db_mod_f == optimistictransactiondb:
+        yield rocksdb_otxn_options
+
 
 @pytest.fixture()
-def txn_f(txn_db_mod_f, txn_db_f, rocksdb_writeoptions, rocksdb_transaction_options):
-    txn_db_mod_f.put(txn_db_f, rocksdb_writeoptions, "key-pre-txn", "value")
+def base_db_mod_f(txn_db_mod_f):
+    if txn_db_mod_f == transactiondb:
+        yield transactiondb
+    elif txn_db_mod_f == optimistictransactiondb:
+        yield db
 
-    txn = txn_db_mod_f.begin_transaction(txn_db_f, rocksdb_writeoptions, rocksdb_transaction_options, None)
+
+@pytest.fixture()
+def base_db_f(txn_db_mod_f, txn_db_f):
+    if txn_db_mod_f == transactiondb:
+        yield txn_db_f
+    elif txn_db_mod_f == optimistictransactiondb:
+        base_db = optimistictransactiondb.get_base_db(txn_db_f)
+        yield base_db
+        optimistictransactiondb.close_base_db(base_db)
+
+
+@pytest.fixture()
+def txn_f(txn_db_mod_f, txn_db_f, base_db_mod_f, base_db_f, rocksdb_writeoptions, txn_options_f):
+    base_db_mod_f.put(base_db_f, rocksdb_writeoptions, "key-pre-txn", "value")
+
+    txn = txn_db_mod_f.begin_transaction(txn_db_f, rocksdb_writeoptions, txn_options_f, None)
     yield txn
     transaction.destroy(txn)
 
@@ -36,12 +70,12 @@ def test_get_cf():
 
 
 @pytest.mark.skip(reason="ERRPTR Resetting")
-def test_get_for_update(txn_db_mod_f, txn_db_f, txn_f, rocksdb_readoptions, rocksdb_writeoptions):
+def test_get_for_update(base_db_mod_f, base_db_f, txn_f, rocksdb_readoptions, rocksdb_writeoptions):
     v = transaction.get_for_update(txn_f, rocksdb_readoptions, "key-pre-txn", 1)
     assert v == "value"
 
     with pytest.raises(RuntimeError):
-        txn_db_mod_f.put(txn_db_f, rocksdb_writeoptions, "key-pre-txn", "value0")
+        base_db_mod_f.put(base_db_f, rocksdb_writeoptions, "key-pre-txn", "value0")
         transaction.commit(txn_f)
 
 
@@ -50,12 +84,12 @@ def test_get_for_update_cf():
     assert False
 
 
-def test_commit(txn_db_mod_f, txn_db_f, txn_f, rocksdb_readoptions):
+def test_commit(base_db_mod_f, base_db_f, txn_f, rocksdb_readoptions):
     transaction.put(txn_f, "key", "committed")
     transaction.delete(txn_f, "key-pre-txn")
     transaction.commit(txn_f)
 
-    assert txn_db_mod_f.get(txn_db_f, rocksdb_readoptions, "key") == "committed"
+    assert base_db_mod_f.get(base_db_f, rocksdb_readoptions, "key") == "committed"
 
 
 def test_rollback(txn_f, rocksdb_readoptions):
@@ -75,17 +109,17 @@ def test_savepoint(txn_f, rocksdb_readoptions):
     assert transaction.get(txn_f, rocksdb_readoptions, "B") is None
 
 
-def test_get_snapshot(txn_db_mod_f, txn_db_f, txn_f, rocksdb_writeoptions, rocksdb_readoptions):
+def test_get_snapshot(base_db_mod_f, base_db_f, txn_f, rocksdb_writeoptions, rocksdb_readoptions):
     # https://github.com/facebook/rocksdb/wiki/Transactions#setting-a-snapshot
     snap = transaction.get_snapshot(txn_f)
 
-    txn_db_mod_f.put(txn_db_f, rocksdb_writeoptions, "key1", "value0")
+    base_db_mod_f.put(base_db_f, rocksdb_writeoptions, "key1", "value0")
 
     with pytest.raises(RuntimeError):
         transaction.put(txn_f, "key1", "value1")
         transaction.commit(txn_f)
 
-    assert txn_db_mod_f.get(txn_db_f, rocksdb_readoptions, "key1") == "value0"
+    assert base_db_mod_f.get(base_db_f, rocksdb_readoptions, "key1") == "value0"
     snapshot.destroy(snap)
 
 
