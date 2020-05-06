@@ -5,9 +5,8 @@ ROCKSDB_MODULE_HEADER(sstfilewriter, package="zeroae.rocksdb.c")
 %newobject create_with_comparator;
 %delobject destroy;
 
-%apply (const char *STRING, size_t LENGTH) {
-    (const char* key, size_t keylen),
-    (const char* val, size_t vallen)
-}
+%cstring_input_binary(const char* key, size_t keylen);
+%cstring_input_binary(const char* val, size_t vallen);
+%apply (uint64_t *OUTPUT) { uint64_t* file_size }
 
 ROCKSDB_MODULE_FOOTER()
