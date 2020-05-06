@@ -161,8 +161,13 @@ def rocksdb_restore_options():
     restore_options.destroy(rv)
 
 
+@pytest.fixture()
+def rocksdb_sstfilewriter_file(tmp_path_factory):
+    return str(tmp_path_factory.mktemp("sstfw", numbered=1)/"file.sst")
+
+
 @pytest.fixture
-def rocksdb_sstfilewriter(rocksdb_envoptions, rocksdb_options):
+def rocksdb_sstfilewriter(rocksdb_envoptions, rocksdb_options, rocksdb_sstfilewriter_file):
     rv = sstfilewriter.create(rocksdb_envoptions, rocksdb_options)
     yield rv
     sstfilewriter.destroy(rv)

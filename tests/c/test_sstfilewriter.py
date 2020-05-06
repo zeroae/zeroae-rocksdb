@@ -1,47 +1,47 @@
 import pytest
 
-from zeroae.rocksdb.c import sstfilewriter
+from zeroae.rocksdb.c import sstfilewriter as sstfw
+
+@pytest.fixture
+def sstfw_f(rocksdb_sstfilewriter, rocksdb_sstfilewriter_file):
+    sstfw.open(rocksdb_sstfilewriter, rocksdb_sstfilewriter_file)
+    yield rocksdb_sstfilewriter
+    sstfw.finish(rocksdb_sstfilewriter)
 
 
 def test_fixture(rocksdb_sstfilewriter):
-    assert rocksdb_sstfilewriter is not None
+    assert sstfw_f is not None
+
 
 @pytest.mark.xfail
 def test_create_with_comparator(rocksdb_envoptions, rocksdb_options):
     assert False
 
 
-@pytest.mark.xfail
-def test_open():
+def test_add(sstfw_f):
+    sstfw.add(sstfw_f, "key0", "val")
+    sstfw.add(sstfw_f, "key1", "val")
+
+
+def test_put(sstfw_f):
+    sstfw.put(sstfw_f, "key", "val")
+
+
+@pytest.mark.skip
+def test_merge(sstfw_f):
     assert False
 
 
-@pytest.mark.xfail
-def test_add():
-    assert False
+def test_delete(sstfw_f):
+    sstfw.add(sstfw_f, "key0", "val")
+    sstfw.delete(sstfw_f, "key1")
 
 
-@pytest.mark.xfail
-def test_put():
-    assert False
+def test_file_size(rocksdb_sstfilewriter, rocksdb_sstfilewriter_file):
+    assert sstfw.file_size(rocksdb_sstfilewriter) == 0
 
+    sstfw.open(rocksdb_sstfilewriter, rocksdb_sstfilewriter_file)
+    sstfw.add(rocksdb_sstfilewriter, "key", "val")
+    sstfw.finish(rocksdb_sstfilewriter)
 
-@pytest.mark.xfail
-def test_merge():
-    assert False
-
-
-@pytest.mark.xfail
-def test_delete():
-    assert False
-
-
-@pytest.mark.xfail
-def test_finish():
-    assert False
-
-
-@pytest.mark.xfail
-def test_file_size():
-    assert False
-
+    assert sstfw.file_size(rocksdb_sstfilewriter) == pytest.approx(821, 8)
