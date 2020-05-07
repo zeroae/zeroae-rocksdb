@@ -1,5 +1,5 @@
 %include "c.i"
-ROCKSDB_MODULE_HEADER(readoptions, "zeroae.rocksdb.c")
+ROCKSDB_MODULE_HEADER(readoptions)
 
 // Constructor/Destructor for rocksdb_readoptions
 %newobject create;

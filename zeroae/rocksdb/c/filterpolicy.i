@@ -1,5 +1,5 @@
 %include "c.i"
-ROCKSDB_MODULE_HEADER(filterpolicy, package="zeroae.rocksdb.c")
+ROCKSDB_MODULE_HEADER(filterpolicy)
 
 %newobject create;
 %newobject create_bloom;

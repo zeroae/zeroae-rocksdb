@@ -13,7 +13,7 @@ for c_module in ["zeroae/rocksdb/c"]:
     (_, _, filenames) = next(os.walk(c_module), (None, None, []))
     i_files = sorted([f.replace('.i', '') for f in filenames if f.endswith('.i') and f != "c.i"])
     ext_modules += [Extension(f"{c_module.replace('/', '.')}._{i_file}",
-                          define_macros=[("SWIG_TYPE_TABLE", f"rocksdb_{i_file}")],
+                          define_macros=[("SWIG_TYPE_TABLE", f"crocksdb")],
                           libraries=["rocksdb"],
                           sources=[f"{c_module}/{i_file}.i"],
                           swig_opts=[f"-I{os.environ['CONDA_PREFIX']}/include"]

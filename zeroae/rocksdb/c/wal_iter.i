@@ -1,5 +1,5 @@
 %include "c.i"
-ROCKSDB_MODULE_HEADER(wal_iter, "zeroae.rocksdb.c")
+ROCKSDB_MODULE_HEADER(wal_iter)
 
 %delobject destroy;
 

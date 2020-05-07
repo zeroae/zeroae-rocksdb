@@ -1,5 +1,5 @@
 %include "c.i"
-ROCKSDB_MODULE_HEADER(optimistictransactiondb, "zeroae.rocksdb.c")
+ROCKSDB_MODULE_HEADER(optimistictransactiondb)
 
 %newobject open;
 %newobject open_column_families;

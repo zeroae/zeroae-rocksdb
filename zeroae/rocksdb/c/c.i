@@ -77,8 +77,8 @@ char* ERRMSG = NULL;
  *  - Ignore all functions that dont' start with rocksdb_ ## name_prefix _
  *  - Strip rocksdb_ ## name_prefix _ from function names
  */
-%define ROCKSDB_MODULE_HEADER(name_prefix, ...)
-%module(## __VA_ARGS__) name_prefix
+%define ROCKSDB_MODULE_HEADER(name_prefix)
+%module(package="zeroae.rocksdb.c") name_prefix
 %rename("$ignore", notregexmatch$name="^rocksdb_" #name_prefix "_") "";
 %rename("%(strip:[rocksdb_" #name_prefix "_])s", regexmatch$name="^rocksdb_" #name_prefix "_") "";
 %cstring_output_allocate_size_keep_null(char** rv, size_t* rvlen, rocksdb_free($1));
@@ -118,8 +118,8 @@ char* ERRMSG = NULL;
  * dataype constructor, destructor are called "create", and "destroy"
  * after all the renaming
  */
-%define ROCKSDB_MODULE(name_prefix, ...)
-ROCKSDB_MODULE_HEADER(name_prefix, ## __VA_ARGS__)
+%define ROCKSDB_MODULE(name_prefix)
+ROCKSDB_MODULE_HEADER(name_prefix)
 
 // Constructor/Destructor for rocksdb_block_based_table_options_t
 %newobject create;
