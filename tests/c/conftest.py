@@ -49,7 +49,7 @@ def rocksdb_comparator_mock():
             return -1 if a < b else 0 if a == b else 1
 
         def name(self):
-            return "ReverseComparator"
+            return "MyComparator"
 
     return MyComparator()
 
