@@ -1,5 +1,5 @@
 %include "c.i"
-ROCKSDB_MODULE_HEADER(perfcontext, "zeroae.rocksdb.c")
+ROCKSDB_MODULE_HEADER(perfcontext)
 
 ROCKSDB_INCLUDE_FUNCTION(set_perf_level)
 

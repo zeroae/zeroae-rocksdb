@@ -1,5 +1,5 @@
 %include "c.i"
-ROCKSDB_MODULE_HEADER(writebatch, "zeroae.rocksdb.c")
+ROCKSDB_MODULE_HEADER(writebatch)
 %rename("$ignore", regexmatch$name="^rocksdb_writebatch_wi_") "";
 
 // Typemaps

@@ -1,5 +1,5 @@
 %include "c.i"
-ROCKSDB_MODULE_HEADER(writebatch_wi, "zeroae.rocksdb.c")
+ROCKSDB_MODULE_HEADER(writebatch_wi)
 
 // Typemaps
 %apply (const char *STRING, size_t LENGTH) {

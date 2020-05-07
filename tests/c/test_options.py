@@ -92,7 +92,7 @@ def test_set_paranoid_checks(rocksdb_options):
 
 def test_set_db_paths(rocksdb_options, rocksdb_dbpath):
     # TODO: Convert typemap to a list of dbpaths
-    options.set_db_paths(rocksdb_options, [rocksdb_dbpath], 1)
+    options.set_db_paths(rocksdb_options, (rocksdb_dbpath, rocksdb_dbpath), 2)
 
 
 def test_set_env(rocksdb_options, rocksdb_env):

@@ -1,5 +1,5 @@
 %include "c.i"
-ROCKSDB_MODULE_HEADER(options, package="zeroae.rocksdb.c")
+ROCKSDB_MODULE_HEADER(options)
 
 ROCKSDB_INCLUDE_FUNCTION(get_options_from_string)
 

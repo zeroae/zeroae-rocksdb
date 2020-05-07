@@ -1,5 +1,5 @@
 %include "c.i"
-ROCKSDB_MODULE_HEADER(env, package="zeroae.rocksdb.c")
+ROCKSDB_MODULE_HEADER(env)
 
 %rename("create_default") "rocksdb_create_default_env";
 %rename("create_mem") "rocksdb_create_mem_env";

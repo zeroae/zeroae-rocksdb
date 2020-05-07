@@ -1,5 +1,5 @@
 %include "c.i"
-ROCKSDB_MODULE_HEADER(slicetransform, "zeroae.rocksdb.c")
+ROCKSDB_MODULE_HEADER(slicetransform)
 %newobject create;
 %newobject create_fixed_prefix;
 %newobject create_noop;

@@ -1,5 +1,5 @@
 %include "c.i"
-ROCKSDB_MODULE_HEADER(transaction, "zeroae.rocksdb.c")
+ROCKSDB_MODULE_HEADER(transaction)
 
 %rename("$ignore", regexmatch$name="^rocksdb_transaction_options_") "";
 

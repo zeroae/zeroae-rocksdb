@@ -1,5 +1,5 @@
 %include "c.i"
-ROCKSDB_MODULE_HEADER(sstfilewriter, package="zeroae.rocksdb.c")
+ROCKSDB_MODULE_HEADER(sstfilewriter)
 
 %newobject create;
 %newobject create_with_comparator;

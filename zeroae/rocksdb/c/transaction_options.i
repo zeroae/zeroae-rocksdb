@@ -1,2 +1,2 @@
 %include "c.i"
-ROCKSDB_MODULE(transaction_options, "zeroae.rocksdb.c")
+ROCKSDB_MODULE(transaction_options)
