@@ -8,6 +8,7 @@ import os
 with open("README.rst") as readme_file:
     readme = readme_file.read()
 
+extra_swig_opts={"comparator":["-c++"]}
 ext_modules = []
 for c_module in ["zeroae/rocksdb/c"]:
     (_, _, filenames) = next(os.walk(c_module), (None, None, []))
@@ -16,7 +17,7 @@ for c_module in ["zeroae/rocksdb/c"]:
                           define_macros=[("SWIG_TYPE_TABLE", f"crocksdb")],
                           libraries=["rocksdb"],
                           sources=[f"{c_module}/{i_file}.i"],
-                          swig_opts=[f"-I{os.environ['CONDA_PREFIX']}/include"]
+                          swig_opts=[f"-I{os.environ['CONDA_PREFIX']}/include"]+extra_swig_opts.get(i_file, [])
                           )
                     for i_file in i_files
                     ]

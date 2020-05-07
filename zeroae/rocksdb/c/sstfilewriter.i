@@ -1,8 +1,11 @@
 %include "c.i"
 ROCKSDB_MODULE_HEADER(sstfilewriter)
 
+// Deprecated upstream (at C++ API level)
+%ignore rocksdb_sstfilewriter_create_with_comparator;
+%ignore rocksdb_sstfilewriter_add;
+
 %newobject create;
-%newobject create_with_comparator;
 %delobject destroy;
 
 %cstring_input_binary(const char* key, size_t keylen);

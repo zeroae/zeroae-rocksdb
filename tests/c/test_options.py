@@ -52,9 +52,8 @@ def test_compaction_readahead_size(rocksdb_options):
     options.compaction_readahead_size(rocksdb_options, 1024)
 
 
-@pytest.mark.xfail
-def test_set_comparator():
-    assert False
+def test_set_comparator(rocksdb_options, rocksdb_comparator_f):
+    options.set_comparator(rocksdb_options, rocksdb_comparator_f)
 
 
 @pytest.mark.xfail
