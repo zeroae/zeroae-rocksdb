@@ -43,9 +43,8 @@ def test_set_compaction_filter():
     assert False
 
 
-@pytest.mark.xfail
-def test_set_compaction_filter_factory():
-    assert False
+def test_set_compaction_filter_factory(rocksdb_options, rocksdb_compactionfilterfactory_f):
+    options.set_compaction_filter_factory(rocksdb_options, rocksdb_compactionfilterfactory_f)
 
 
 def test_compaction_readahead_size(rocksdb_options):

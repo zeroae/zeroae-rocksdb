@@ -8,8 +8,12 @@ import os
 with open("README.rst") as readme_file:
     readme = readme_file.read()
 
-extra_swig_opts={"comparator":["-c++"]}
 ext_modules = []
+extra_swig_opts = {
+    "comparator": ["-c++"],
+    "compactionfilter": ["-c++"],
+    "compactionfilterfactory": ["-c++"],
+}
 for c_module in ["zeroae/rocksdb/c"]:
     (_, _, filenames) = next(os.walk(c_module), (None, None, []))
     i_files = sorted([f.replace('.i', '') for f in filenames if f.endswith('.i') and f != "c.i"])
