@@ -4,12 +4,8 @@
 %rename("%(strip:[rocksdb_comparator_])s", regexmatch$name="^rocksdb_comparator_") "";
 
 // Typemaps
-%typemap(directorin,noblock=1, numinputs=0) (const char* a, size_t alen) {
-    $input = SWIG_FromCharPtrAndSize($1, $2);
-}
-%apply (const char* a, size_t alen) { (const char* b, size_t blen) }
-%cstring_input_binary(const char* a, size_t alen);
-%cstring_input_binary(const char* b, size_t blen);
+%cstring_director_input_binary(const char* a, size_t alen);
+%cstring_director_input_binary(const char* b, size_t blen);
 
 // Include the Comparator Class
 %rename("%s") Comparator;

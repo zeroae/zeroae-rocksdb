@@ -24,6 +24,18 @@ char* ERRMSG = NULL;
   }
 }
 
+/*
+ * %cstring_director_input_binary(TYPEMAP, SIZE)
+ *
+ * This macro extends the %cstring_input_binary macro
+ * with a typemap for `directorin`
+ */
+%define %cstring_director_input_binary(TYPEMAP, SIZE)
+%cstring_input_binary(TYPEMAP, SIZE);
+%typemap(directorin, noblock=1, numinputs=0, fragment="SWIG_FromCharPtrAndSize") (TYPEMAP, SIZE) {
+    $input = SWIG_FromCharPtrAndSize($1, $2);
+}
+%enddef
 
 /*
  * %cstring_output_allocate_keep_null(TYPEMAP, RELEASE)
