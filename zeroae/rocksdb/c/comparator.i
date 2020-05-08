@@ -1,7 +1,6 @@
 %include "c.i"
-%module(package="zeroae.rocksdb.c", directors="1") comparator
-%rename("$ignore", notregexmatch$name="^rocksdb_comparator_") "";
-%rename("%(strip:[rocksdb_comparator_])s", regexmatch$name="^rocksdb_comparator_") "";
+%rocksdb_module(directors="1") comparator;
+%rocksdb_strip_and_keep_only(comparator);
 
 // Typemaps
 %cstring_director_input_binary(const char* a, size_t alen);

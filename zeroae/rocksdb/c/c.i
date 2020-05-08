@@ -83,6 +83,26 @@ char* ERRMSG = NULL;
 %enddef
 
 /**
+ * %rocksdb_module(...)
+ *
+ * This macro creates a SWIG module with the package="zeroae.rocksdb.c", ...)
+ */
+%define %rocksdb_module(...)
+%module(package="zeroae.rocksdb.c", ## __VA_ARGS__)
+%enddef
+
+/*
+ * %rocksdb_strip_and_keep_only(PREFIX)
+ *
+ * This macro ignores all items that do not start with
+ * rocksdb_$PREFIX, and strips rocksdb_$PREFIX from symbols
+ */
+%define %rocksdb_strip_and_keep_only(PREFIX)
+%rename("$ignore", notregexmatch$name="^rocksdb_" #PREFIX "_") "";
+%rename("%(strip:[rocksdb_" #PREFIX "_])s", regexmatch$name="^rocksdb_" #PREFIX "_") ""
+%enddef
+
+/**
  * This macro selects only the rocksdb functions that start
  * with the name_prefix (after having rocksdb_) removed.
  *
@@ -90,9 +110,8 @@ char* ERRMSG = NULL;
  *  - Strip rocksdb_ ## name_prefix _ from function names
  */
 %define ROCKSDB_MODULE_HEADER(name_prefix)
-%module(package="zeroae.rocksdb.c") name_prefix
-%rename("$ignore", notregexmatch$name="^rocksdb_" #name_prefix "_") "";
-%rename("%(strip:[rocksdb_" #name_prefix "_])s", regexmatch$name="^rocksdb_" #name_prefix "_") "";
+%module(package="zeroae.rocksdb.c") name_prefix;
+%rocksdb_strip_and_keep_only(name_prefix);
 %cstring_output_allocate_size_keep_null(char** rv, size_t* rvlen, rocksdb_free($1));
 %enddef
 
