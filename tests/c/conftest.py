@@ -36,6 +36,31 @@ def rocksdb_compactoptions():
     compactoptions.destroy(rv)
 
 
+@pytest.fixture()
+def rocksdb_comparator_mock():
+    from zeroae.rocksdb.c.comparator import Comparator
+
+    class MyComparator(Comparator):
+        def __init__(self):
+            super().__init__()
+
+        def compare(self, a, b):
+            print(f"compare {a} with {b}")
+            return -1 if a < b else 0 if a == b else 1
+
+        def name(self):
+            return "MyComparator"
+
+    return MyComparator()
+
+
+@pytest.fixture()
+def rocksdb_comparator_f(rocksdb_comparator_mock):
+    rv = comparator.create(rocksdb_comparator_mock.__disown__())
+    yield rv
+    comparator.destroy(rv)
+
+
 @pytest.fixture
 def rocksdb_cuckoo_table_options():
     rv = cuckoo_options.create()
@@ -166,8 +191,10 @@ def rocksdb_sstfilewriter_file(tmp_path_factory):
     return str(tmp_path_factory.mktemp("sstfw", numbered=1)/"file.sst")
 
 
-@pytest.fixture
-def rocksdb_sstfilewriter(rocksdb_envoptions, rocksdb_options, rocksdb_sstfilewriter_file):
+@pytest.fixture(params=["default", "py_comp"])
+def rocksdb_sstfilewriter(request, rocksdb_envoptions, rocksdb_options, rocksdb_comparator_f):
+    if request.param == "py_comp":
+        options.set_comparator(rocksdb_options, rocksdb_comparator_f)
     rv = sstfilewriter.create(rocksdb_envoptions, rocksdb_options)
     yield rv
     sstfilewriter.destroy(rv)
