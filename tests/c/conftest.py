@@ -30,6 +30,30 @@ def rocksdb_cache_lru():
 
 
 @pytest.fixture
+def rocksdb_compactionfilterfactory_mock():
+    from zeroae.rocksdb.c.compactionfilterfactory import CompactionFilterFactory
+
+    class MyCompactionFilterFactory(CompactionFilterFactory):
+        def __init__(self):
+            super().__init__()
+
+        def name(self):
+            return "MyCompactionFilterFactory"
+
+        def create_compaction_filter(self, context):
+            return None
+
+    return MyCompactionFilterFactory()
+
+
+@pytest.fixture
+def rocksdb_compactionfilterfactory_f(rocksdb_compactionfilterfactory_mock):
+    rv = compactionfilterfactory.create(rocksdb_compactionfilterfactory_mock.__disown__())
+    yield rv
+    compactionfilterfactory.destroy(rv)
+
+
+@pytest.fixture
 def rocksdb_compactoptions():
     rv = compactoptions.create()
     yield rv

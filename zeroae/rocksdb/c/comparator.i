@@ -1,7 +1,6 @@
 %include "c.i"
-%module(package="zeroae.rocksdb.c", directors="1") comparator
-%rename("$ignore", notregexmatch$name="^rocksdb_comparator_") "";
-%rename("%(strip:[rocksdb_comparator_])s", regexmatch$name="^rocksdb_comparator_") "";
+%rocksdb_module(directors="1") comparator;
+%rocksdb_strip_and_keep_only(comparator);
 
 // Typemaps
 %cstring_director_input_binary(const char* a, size_t alen);
@@ -18,8 +17,8 @@
 %inline %{
 struct Comparator {
   virtual ~Comparator() {}
-  virtual int compare(const char* a, size_t alen, const char* b, size_t blen) = 0;
   virtual const char* name() = 0;
+  virtual int compare(const char* a, size_t alen, const char* b, size_t blen) = 0;
 };
 %}
 
@@ -28,11 +27,11 @@ struct Comparator {
   static void destructor_cb(void* self) {
     delete static_cast<Comparator*>(self);
   }
-  static int compare_cb(void* self, const char* a, size_t alen, const char* b, size_t blen) {
-    return static_cast<Comparator*>(self)->compare(a, alen, b, blen);
-  }
   static const char* name_cb(void* self) {
     return static_cast<Comparator*>(self)->name();
+  }
+  static int compare_cb(void* self, const char* a, size_t alen, const char* b, size_t blen) {
+    return static_cast<Comparator*>(self)->compare(a, alen, b, blen);
   }
 %}
 
